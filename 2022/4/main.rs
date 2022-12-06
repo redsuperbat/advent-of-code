@@ -10,6 +10,10 @@ impl Range {
         self.low <= r2.low && self.high >= r2.high
     }
 
+    fn overlaps_with(&self, r2: &Range) -> bool {
+        self.high >= r2.low && self.low <= r2.high
+    }
+
     fn from_str(string: &str) -> Range {
         let (low, high) = string.split_once('-').unwrap();
         Range {
@@ -28,11 +32,18 @@ fn part_one() {
         .map(|(first, second)| u32::from(first.contains(&second) || second.contains(&first)))
         .sum();
 
-    println!("{:?}", res)
+    println!("Part one result: {:?}", res)
 }
 
 fn part_two() {
     let input = fs::read_to_string("input.txt").unwrap();
+    let res: u32 = input
+        .split('\n')
+        .map(|it| it.split_once(',').unwrap())
+        .map(|(first, second)| (Range::from_str(first), Range::from_str(second)))
+        .map(|(first, second)| u32::from(first.overlaps_with(&second)))
+        .sum();
+    println!("Part two result: {:?}", res)
 }
 
 fn main() {
