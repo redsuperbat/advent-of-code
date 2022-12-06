@@ -1,7 +1,8 @@
-use std::fs;
+use std::{fs, slice};
+
+const LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 fn part_one() {
-    const LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let input = fs::read_to_string("input.txt").unwrap();
     let result = input
         .split('\n')
@@ -18,6 +19,26 @@ fn part_one() {
     println!("Result is {}", result)
 }
 
+fn part_two() {
+    let input = fs::read_to_string("input.txt").unwrap();
+    let result = input
+        .split('\n')
+        .collect::<Vec<_>>()
+        .chunks(3)
+        .map(|it| (it[0], it[1], it[2]))
+        .map(|(f, s, t)| {
+            let char = f
+                .chars()
+                .find(|it| s.contains(*it) && t.contains(*it))
+                .unwrap();
+            let pos = LETTERS.chars().position(|it| it == char).unwrap() + 1;
+            pos as u32
+        })
+        .sum::<u32>();
+    println!("Result part two {}", result)
+}
+
 fn main() {
-    part_one()
+    part_one();
+    part_two();
 }
