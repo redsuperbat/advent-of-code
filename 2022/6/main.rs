@@ -1,6 +1,6 @@
 use std::{collections::HashSet, fs};
 
-fn part_one() -> String {
+fn shared(packet_len: usize) -> String {
     let input = fs::read_to_string("input.txt").unwrap();
 
     let mut window = String::new();
@@ -9,7 +9,7 @@ fn part_one() -> String {
         println!("Iteration {}: {:?}", i, window);
         let w_len = window.len();
 
-        if w_len == 4 {
+        if w_len == packet_len {
             let hs = window.chars().collect::<HashSet<_>>();
             if hs.len() == w_len {
                 return i.to_string();
@@ -23,9 +23,12 @@ fn part_one() -> String {
     panic!("Bad algo :(")
 }
 
+fn part_one() -> String {
+    shared(4)
+}
+
 fn part_two() -> String {
-    let input = fs::read_to_string("input.txt").unwrap();
-    "".to_string()
+    shared(14)
 }
 
 fn main() {
